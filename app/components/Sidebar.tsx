@@ -120,10 +120,36 @@ export default function Sidebar() {
             </div>
           </div>
         )}
+        <ThemeToggle />
         <button className="logout" type="button">
           <span aria-hidden="true">↪</span> Log out
         </button>
       </div>
     </aside>
+  );
+}
+
+import { useTheme } from "next-themes";
+import { Moon, Sun } from "lucide-react";
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+  
+  const isDark = theme === "dark";
+  return (
+    <button 
+      className="nav-item" 
+      style={{ width: '100%', justifyContent: 'flex-start', background: 'transparent', border: 'none', cursor: 'pointer', marginBottom: '4px' }} 
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+    >
+      <span className="nav-icon" aria-hidden="true" style={{ opacity: 0.7 }}>
+        {isDark ? <Sun size={18} /> : <Moon size={18} />}
+      </span>
+      {isDark ? "Light Mode" : "Dark Mode"}
+    </button>
   );
 }

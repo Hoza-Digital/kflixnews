@@ -1905,3 +1905,42 @@ textarea:focus-visible,
   .post-excerpt { font-size: 16px; }
   .post-content { font-size: 16px; padding: 38px 22px 52px; }
 }
+
+.dark {
+  --ink: #f7f9fc;
+  --muted: #94a3b8;
+  --line: #334155;
+  --soft-line: #1e293b;
+  --blue: #3b82f6;
+  --blue-dark: #60a5fa;
+  --blue-soft: #1e3a8a;
+  --green: #22c55e;
+  --green-soft: #14532d;
+  --amber: #f59e0b;
+  --amber-soft: #78350f;
+}
+
+.dark body {
+  background: #0f172a;
+}
+
+.dark .sidebar,
+.dark .stat-card,
+.dark .panel,
+.dark .article-composer,
+.dark .modal,
+.dark .range-select select,
+.dark .composer-page-surface .article-composer,
+.dark .action-btn {
+  background: #1e293b;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.dark .secondary-button, .dark .text-button {
+  color: var(--blue-dark);
+}
+
+.dark .nav-item:hover, .dark .logout:hover {
+  background: var(--soft-line);
+}
