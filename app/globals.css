@@ -2088,3 +2088,15 @@ textarea:focus-visible,
 .dark .schedule-fields {
   background: #0f172a;
 }
+
+.dark .close-button {
+  background: var(--soft-line);
+  color: var(--ink);
+}
+.dark .close-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dark .slug-preview code {
+  color: var(--blue-dark);
+}
