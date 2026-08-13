@@ -1930,7 +1930,6 @@ textarea:focus-visible,
 .dark .article-composer,
 .dark .modal,
 .dark .range-select select,
-.dark .composer-page-surface .article-composer,
 .dark .action-btn {
   background: #1e293b;
   color: var(--ink);
@@ -1944,7 +1943,8 @@ textarea:focus-visible,
 .dark .nav-item:hover, .dark .logout:hover {
   background: var(--soft-line);
 }
- 
+
+ 
 .dark .composer-card,
 .dark .composer-actions {
   background: #1e293b !important;
@@ -2051,4 +2051,9 @@ textarea:focus-visible,
 }
 .dark .upload-dropzone strong {
   color: var(--ink);
+}
+
+.dark .composer-page-surface .article-composer {
+  background: transparent !important;
+  border-color: transparent !important;
 }
