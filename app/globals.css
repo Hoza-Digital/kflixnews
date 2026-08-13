@@ -2068,3 +2068,7 @@ textarea:focus-visible,
 .dark .workflow-option strong {
   color: var(--ink);
 }
+
+.dark .schedule-fields {
+  background: #0f172a;
+}
