@@ -911,7 +911,7 @@ textarea:focus-visible,
 }
 
 .field {
-  color: #344054;
+  color: var(--label-color, #344054);
   display: grid;
   font-size: 13px;
   font-weight: 750;
@@ -935,7 +935,7 @@ textarea:focus-visible,
 
 .headline-toggle {
   align-items: center;
-  color: #475467;
+  color: var(--label-color, #475467);
   cursor: pointer;
   display: inline-flex;
   font-size: 11px;
@@ -1030,7 +1030,7 @@ textarea:focus-visible,
 
 .toggle-label {
   align-items: center;
-  color: #475467;
+  color: var(--label-color, #475467);
   cursor: pointer;
   display: flex;
   font-size: 11px;
@@ -1920,6 +1920,7 @@ textarea:focus-visible,
   --amber-soft: #78350f;
   --card-bg: #1e293b;
   --editor-bg: transparent;
+  --label-color: var(--ink);
 }
 
 .dark body {
