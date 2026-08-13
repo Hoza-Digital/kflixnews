@@ -28,7 +28,7 @@ export default async function PostPage({ params }: PostPageProps) {
       <nav className="post-nav" aria-label="Post navigation">
         <Link href="/">STORY.</Link>
         <div className="post-nav-actions">
-          <Link href="/admin/all-article">All articles</Link>
+          <Link href="/all-article">All articles</Link>
           <PostActions article={article} />
         </div>
       </nav>

@@ -7,7 +7,7 @@ import Sidebar from "../components/Sidebar";
 
 export default function NewArticlePage() {
   function returnToArticles() {
-    window.location.assign("/admin/all-article");
+    window.location.assign("/all-article");
   }
 
   return (
