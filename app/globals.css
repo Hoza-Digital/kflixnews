@@ -2018,3 +2018,35 @@ textarea:focus-visible,
 .dark .gallery-page-item:hover {
   border-color: var(--muted);
 }
+
+.dark .image-manager-modal {
+  background: #1e293b;
+  border: 1px solid var(--line);
+}
+.dark .manager-header,
+.dark .manager-actions {
+  border-color: var(--line);
+}
+.dark .manager-actions {
+  background: #1e293b;
+}
+.dark .manager-image-preview,
+.dark .manager-metadata {
+  background: #0f172a;
+  border-color: var(--line);
+}
+.dark .upload-dropzone {
+  background: #0f172a;
+  border-color: var(--line);
+}
+.dark .upload-dropzone:hover {
+  background: #1e293b;
+  border-color: var(--muted);
+}
+.dark .upload-dropzone.drag-active {
+  background: #1e293b;
+  border-color: var(--blue);
+}
+.dark .upload-dropzone strong {
+  color: var(--ink);
+}
