@@ -1944,8 +1944,9 @@ textarea:focus-visible,
   color: var(--ink);
 }
 
-.dark .secondary-button:hover {
-  background: rgba(255, 255, 255, 0.05);
+.dark .secondary-button:hover, .dark .primary-button:hover {
+  background: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .dark .danger-button {
