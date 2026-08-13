@@ -59,6 +59,7 @@ function formatArticle(row: ArticleRow): Article {
     }).format(articleDate),
     views: row.views > 0 ? formatCompact(row.views) : "—",
     image: row.image_style,
+    row,
   };
 }
 
@@ -67,6 +68,7 @@ export default function Home() {
   const [activeNav, setActiveNav] = useState("Dashboard");
   const [showAll, setShowAll] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingArticle, setEditingArticle] = useState<ArticleRow | null>(null);
   const [articles, setArticles] = useState(initialArticles);
   const [trafficValues, setTrafficValues] = useState<number[]>(chartSets["30 days"]);
   const [trafficLabels, setTrafficLabels] = useState(["Apr 21", "Apr 28", "May 5", "May 12", "May 19"]);
@@ -177,7 +179,10 @@ export default function Home() {
               {databaseError ? "Local preview" : isSyncing ? "Syncing database" : "Shared database live"}
             </div>
           </div>
-          <button className="primary-button" onClick={() => setIsModalOpen(true)} type="button">
+          <button className="primary-button" onClick={() => {
+            setEditingArticle(null);
+            setIsModalOpen(true);
+          }} type="button">
             <span aria-hidden="true">✎</span> New Article
           </button>
         </header>
@@ -294,16 +299,17 @@ export default function Home() {
               </button>
             </div>
             <div className="article-table" role="table" aria-label="Recent articles">
-              <div className="article-row table-header" role="row">
+              <div className="article-row article-row-actions table-header" role="row">
                 <span role="columnheader">Article</span>
                 <span role="columnheader">Author</span>
                 <span role="columnheader">Editor</span>
                 <span role="columnheader">Status</span>
                 <span role="columnheader">Date</span>
                 <span role="columnheader">Views</span>
+                <span role="columnheader">Actions</span>
               </div>
               {visibleArticles.map((article) => (
-                <div className="article-row" key={article.id} role="row">
+                <div className="article-row article-row-actions" key={article.id} role="row">
                   <div className="article-title" role="cell">
                     <span className="thumbnail" style={{ background: article.image }} aria-hidden="true" />
                     <span>{article.title}</span>
@@ -315,6 +321,15 @@ export default function Home() {
                   </span>
                   <span role="cell" data-label="Date">{article.date}</span>
                   <strong role="cell" data-label="Views">{article.views}</strong>
+                  <div className="row-actions" role="cell">
+                    <button className="action-btn edit-btn" onClick={() => {
+                      setEditingArticle(article.row);
+                      setIsModalOpen(true);
+                    }} type="button" title="Edit article">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+                      Edit
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -323,9 +338,19 @@ export default function Home() {
       </section>
 
       <ArticleComposer
-        onClose={() => setIsModalOpen(false)}
+        article={editingArticle}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingArticle(null);
+        }}
         onSaved={(article) => {
-          setArticles((current) => [formatArticle(article), ...current]);
+          setArticles((current) => {
+            const formatted = formatArticle(article);
+            const exists = current.some(item => item.id === article.id);
+            return exists
+              ? current.map(item => item.id === article.id ? formatted : item)
+              : [formatted, ...current];
+          });
           setDatabaseError("");
         }}
         open={isModalOpen}

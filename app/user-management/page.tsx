@@ -129,7 +129,8 @@ export default function UserManagementPage() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   required 
-                  style={{ height: "48px", fontSize: "16px" }}
+                  className="gallery-page-search"
+                  style={{ height: "48px", fontSize: "16px", maxWidth: "100%" }}
                 />
               </label>
 
@@ -143,7 +144,8 @@ export default function UserManagementPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required 
-                    style={{ height: "48px", fontSize: "16px", paddingLeft: "48px", width: "100%" }}
+                    className="gallery-page-search"
+                    style={{ height: "48px", fontSize: "16px", paddingLeft: "48px", width: "100%", maxWidth: "100%" }}
                   />
                 </div>
               </label>
@@ -159,7 +161,8 @@ export default function UserManagementPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required 
-                      style={{ height: "48px", fontSize: "16px", paddingLeft: "48px", width: "100%" }}
+                      className="gallery-page-search"
+                      style={{ height: "48px", fontSize: "16px", paddingLeft: "48px", width: "100%", maxWidth: "100%" }}
                     />
                   </div>
                 </label>
@@ -192,7 +195,8 @@ export default function UserManagementPage() {
                   required
                   value={roleId}
                   onChange={(e) => setRoleId(e.target.value)}
-                  style={{ height: "48px", fontSize: "16px", width: "100%" }}
+                  className="gallery-page-search"
+                  style={{ height: "48px", fontSize: "16px", width: "100%", maxWidth: "100%" }}
                 >
                   {roles.map((r) => (
                     <option key={r.id} value={r.id}>{r.name}</option>
@@ -205,7 +209,8 @@ export default function UserManagementPage() {
                 <select 
                   value={timeFormat}
                   onChange={(e) => setTimeFormat(e.target.value)}
-                  style={{ height: "48px", fontSize: "16px", width: "100%" }}
+                  className="gallery-page-search"
+                  style={{ height: "48px", fontSize: "16px", width: "100%", maxWidth: "100%" }}
                 >
                   <option value="default">Use Global Default</option>
                   <option value="12h">12-hour (e.g. 02:30 PM)</option>

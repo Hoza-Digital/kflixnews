@@ -292,7 +292,7 @@ export default function SettingsPage() {
 
         {activeMockRole && !savedRoles.find(r => r.id === activeMockRole)?.job_tasks?.includes("Manage Settings") ? (
           <div className="main-content" style={{ margin: "0 auto", maxWidth: "1440px" }}>
-            <div style={{ padding: "64px 32px", backgroundColor: "white", borderRadius: "12px", border: "1px solid var(--line)", textAlign: "center" }}>
+            <div className="panel" style={{ padding: "64px 32px", borderRadius: "12px", border: "1px solid var(--line)", textAlign: "center" }}>
               <h2 style={{ fontSize: "24px", fontWeight: 700, color: "var(--ink)", marginBottom: "16px" }}>Access Denied</h2>
               <p style={{ color: "var(--slate)", fontSize: "16px" }}>
                 Your current role does not have permission to view or manage settings. 
@@ -620,7 +620,8 @@ export default function SettingsPage() {
                   <select 
                     value={siteTimezone}
                     onChange={(e) => setSiteTimezone(e.target.value)}
-                    style={{ width: "100%", padding: "10px", borderRadius: "6px", border: "1px solid var(--border)", background: "white", color: "var(--ink)", fontSize: "15px" }}
+                    className="gallery-page-search"
+                    style={{ width: "100%", padding: "10px", borderRadius: "6px", fontSize: "15px" }}
                   >
                     <option value="UTC">UTC (Universal Coordinated Time)</option>
                     <option value="Etc/GMT+12">(GMT-12:00) International Date Line West</option>
@@ -704,7 +705,8 @@ export default function SettingsPage() {
                   <select 
                     value={siteTimeFormat}
                     onChange={(e) => setSiteTimeFormat(e.target.value)}
-                    style={{ width: "100%", padding: "10px", borderRadius: "6px", border: "1px solid var(--border)", background: "white", color: "var(--ink)", fontSize: "15px" }}
+                    className="gallery-page-search"
+                    style={{ width: "100%", padding: "10px", borderRadius: "6px", fontSize: "15px" }}
                   >
                     <option value="12h">12-hour (e.g. 02:30 PM)</option>
                     <option value="24h">24-hour (e.g. 14:30)</option>
