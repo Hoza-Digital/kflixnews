@@ -1940,7 +1940,20 @@ textarea:focus-visible,
 }
 
 .dark .secondary-button, .dark .text-button {
-  color: var(--blue-dark);
+  background: transparent;
+  color: var(--ink);
+}
+
+.dark .secondary-button:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.dark .danger-button {
+  color: #f87171 !important;
+}
+
+.dark .danger-button:hover {
+  background: rgba(248, 113, 113, 0.1) !important;
 }
 
 .dark .nav-item:hover, .dark .logout:hover {
