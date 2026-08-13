@@ -1944,7 +1944,8 @@ textarea:focus-visible,
 }
 
 .dark .nav-item:hover, .dark .logout:hover {
-  background: var(--soft-line);
+  background: #ffffff;
+  color: #0f172a !important;
 }
 
  
