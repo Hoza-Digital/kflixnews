@@ -4,9 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArticleComposer } from "../article-composer";
 import Sidebar from "../components/Sidebar";
-import { supabase } from "../lib/supabase";
-import type { Database } from "../lib/database.types";
-import { articlePostPath } from "../lib/articles";
+import { supabase } from "../../lib/supabase";
+import type { Database } from "../../lib/database.types";
+import { articlePostPath } from "../../lib/articles";
 
 type Article = {
   id: number;

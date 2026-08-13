@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Sidebar from "../components/Sidebar";
-import { supabase } from "../lib/supabase";
-import type { Database } from "../lib/database.types";
+import { supabase } from "../../lib/supabase";
+import type { Database } from "../../lib/database.types";
 
 type ArticleImage = Database["public"]["Tables"]["article_images"]["Row"];
 
