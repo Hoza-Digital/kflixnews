@@ -865,7 +865,7 @@ textarea:focus-visible,
 }
 
 .composer-card {
-  background: #fff;
+  background: var(--card-bg, #fff);
   border: 1px solid var(--line);
   border-radius: 14px;
   padding: 22px;
@@ -1918,6 +1918,8 @@ textarea:focus-visible,
   --green-soft: #14532d;
   --amber: #f59e0b;
   --amber-soft: #78350f;
+  --card-bg: #1e293b;
+  --editor-bg: transparent;
 }
 
 .dark body {
