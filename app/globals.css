@@ -1947,8 +1947,8 @@ textarea:focus-visible,
  
 .dark .composer-card,
 .dark .composer-actions {
-  background: #1e293b;
-  border-color: var(--line);
+  background: #1e293b !important;
+  border-color: var(--line) !important;
 }
 .dark .field input,
 .dark .field textarea,
@@ -1969,7 +1969,8 @@ textarea:focus-visible,
   border-color: var(--line);
 }
 .dark .editor-shell {
-  border-color: var(--line);
+  background: transparent !important;
+  border-color: var(--line) !important;
 }
 .dark .editor-toolbar {
   background: #1e293b;
@@ -1987,6 +1988,7 @@ textarea:focus-visible,
   color: var(--blue);
 }
 .dark .rich-editor {
+  background: #0f172a !important;
   color: var(--ink);
 }
 .dark .rich-editor blockquote {
