@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { type DragEvent, useEffect, useState } from "react";
-import Sidebar from "../../components/Sidebar";
-import { supabase } from "../../../lib/supabase";
-import type { Database } from "../../../lib/database.types";
+import Sidebar from "../components/Sidebar";
+import { supabase } from "../lib/supabase";
+import type { Database } from "../lib/database.types";
 
 type ArticleVideo = Database["public"]["Tables"]["article_videos"]["Row"];
 
