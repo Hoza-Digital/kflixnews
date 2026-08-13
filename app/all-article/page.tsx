@@ -66,6 +66,8 @@ export default function AllArticlesPage() {
   const [articles, setArticles] = useState(initialArticles);
   const [isSyncing, setIsSyncing] = useState(true);
   const [databaseError, setDatabaseError] = useState("");
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   useEffect(() => {
     let cancelled = false;
@@ -94,10 +96,17 @@ export default function AllArticlesPage() {
   }, []);
 
   const sortedArticles = useMemo(() => {
-    return [...articles].sort((a, b) => {
+    return [...articles].filter(article => {
+      if (statusFilter !== "All" && article.status !== statusFilter) return false;
+      if (search.trim()) {
+        const s = search.toLowerCase();
+        return article.title.toLowerCase().includes(s) || article.author.toLowerCase().includes(s);
+      }
+      return true;
+    }).sort((a, b) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
-  }, [articles]);
+  }, [articles, search, statusFilter]);
 
   return (
     <main className="app-shell">
@@ -114,12 +123,34 @@ export default function AllArticlesPage() {
               {databaseError ? "Local preview" : isSyncing ? "Syncing database" : "Shared database live"}
             </div>
           </div>
-          <button className="primary-button" onClick={() => {
-            setEditingArticle(null);
-            setIsModalOpen(true);
-          }} type="button">
-            <span aria-hidden="true">✎</span> New Article
-          </button>
+          <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+            <input 
+              aria-label="Search articles"
+              className="gallery-page-search"
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by title or author..."
+              value={search}
+              style={{ width: "240px", minHeight: "42px" }}
+            />
+            <div className="range-select">
+              <select 
+                aria-label="Filter by status" 
+                value={statusFilter} 
+                onChange={(e) => setStatusFilter(e.target.value)}
+                style={{ height: "42px" }}
+              >
+                <option value="All">All Statuses</option>
+                <option value="Published">Published</option>
+                <option value="Draft">Drafts</option>
+              </select>
+            </div>
+            <button className="primary-button" onClick={() => {
+              setEditingArticle(null);
+              setIsModalOpen(true);
+            }} type="button" style={{ height: "42px" }}>
+              <span aria-hidden="true">✎</span> New Article
+            </button>
+          </div>
         </header>
 
         <section className="content-grid" style={{ gridTemplateColumns: "1fr" }}>
@@ -160,7 +191,15 @@ export default function AllArticlesPage() {
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
                       Edit
                     </button>
-                    <button className="action-btn archive-btn" type="button" title="Archive article">
+                    <button className="action-btn archive-btn" onClick={async () => {
+                      if (!window.confirm("Are you sure you want to archive this article? It will be removed from the database.")) return;
+                      const { error } = await supabase.from("articles").delete().eq("id", article.id);
+                      if (error) {
+                        alert("Failed to archive: " + error.message);
+                      } else {
+                        setArticles(current => current.filter(a => a.id !== article.id));
+                      }
+                    }} type="button" title="Archive article">
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="21 8 21 21 3 21 3 8" /><rect x="1" y="3" width="22" height="5" /><line x1="10" y1="12" x2="14" y2="12" /></svg>
                       Archive
                     </button>
