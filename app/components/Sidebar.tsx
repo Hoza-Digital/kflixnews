@@ -8,7 +8,7 @@ import { supabase } from "../../lib/supabase";
 const ALL_NAVIGATION = [
   ["Dashboard", "▦", "/"],
   ["New Article", "＋", "/new-article"],
-  ["Articles", "▤", "/all-article"],
+  ["Articles", "▤", "/admin/all-article"],
   ["Photo Gallery", "▧", "/photo-gallery"],
   ["Video Gallery", "▶", "/video-gallery"],
   ["Comments", "○", "/"],
