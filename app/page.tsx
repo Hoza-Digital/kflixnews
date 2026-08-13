@@ -287,7 +287,7 @@ export default function Home() {
               </div>
               <button
                 className="text-button"
-                onClick={() => window.location.assign("/admin/all-article")}
+                onClick={() => window.location.assign("/all-article")}
                 type="button"
               >
                 View all articles

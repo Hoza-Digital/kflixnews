@@ -7,13 +7,13 @@ import { supabase } from "../../lib/supabase";
 
 const ALL_NAVIGATION = [
   ["Dashboard", "▦", "/"],
-  ["New Article", "＋", "/admin/new-article"],
-  ["Articles", "▤", "/admin/all-article"],
-  ["Photo Gallery", "▧", "/admin/photo-gallery"],
-  ["Video Gallery", "▶", "/admin/video-gallery"],
+  ["New Article", "＋", "/new-article"],
+  ["Articles", "▤", "/all-article"],
+  ["Photo Gallery", "▧", "/photo-gallery"],
+  ["Video Gallery", "▶", "/video-gallery"],
   ["Comments", "○", "/"],
-  ["User Management", "👤", "/admin/user-management"],
-  ["Settings", "⚙", "/admin/settings"],
+  ["User Management", "👤", "/user-management"],
+  ["Settings", "⚙", "/settings"],
 ];
 
 export default function Sidebar() {
