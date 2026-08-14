@@ -23,6 +23,14 @@ export default async function PostPage({ params }: PostPageProps) {
   const articleDate = article.published_at ?? article.created_at;
   if (articleDateCode(articleDate) !== date) notFound();
 
+  // Increment the views counter
+  // We do this asynchronously so it doesn't block the render
+  supabase
+    .from("articles")
+    .update({ views: (article.views || 0) + 1 })
+    .eq("id", article.id)
+    .then();
+
   return (
     <main className="post-page">
       <nav className="post-nav" aria-label="Post navigation">

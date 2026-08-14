@@ -53,7 +53,7 @@ function formatArticle(row: ArticleRow): Article {
       hour: "numeric",
       minute: "2-digit",
     }).format(articleDate),
-    views: row.views > 0 ? formatCompact(row.views) : "—",
+    views: row.views > 0 ? formatCompact(row.views) : "0",
     image: row.image_style,
     postUrl: articlePostPath(row),
     row,
@@ -182,7 +182,7 @@ export default function AllArticlesPage() {
           <article className="panel articles-panel" id="articles">
 
             <div className="article-table" role="table" aria-label="All articles">
-              <div className="article-row article-row-actions table-header" role="row">
+              <div className="article-row all-articles-row table-header" role="row">
                 <span role="columnheader">Article</span>
                 <span role="columnheader">Author</span>
                 <span role="columnheader">Editor</span>
@@ -193,7 +193,7 @@ export default function AllArticlesPage() {
                 <span role="columnheader">Actions</span>
               </div>
               {sortedArticles.map((article) => (
-                <div className="article-row article-row-actions" key={article.id} role="row">
+                <div className="article-row all-articles-row" key={article.id} role="row">
                   <div className="article-title" role="cell">
                     <span className="thumbnail" style={{ background: article.image }} aria-hidden="true" />
                     <Link className="article-title-link" href={article.postUrl} target="_blank" rel="noopener noreferrer">

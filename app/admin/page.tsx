@@ -13,6 +13,7 @@ type Article = {
   editor: string;
   status: "Published" | "Draft";
   date: string;
+  time: string;
   views: string;
   image: string;
   row: ArticleRow;
@@ -58,7 +59,11 @@ function formatArticle(row: ArticleRow): Article {
       day: "numeric",
       year: "numeric",
     }).format(articleDate),
-    views: row.views > 0 ? formatCompact(row.views) : "—",
+    time: new Intl.DateTimeFormat("en", {
+      hour: "numeric",
+      minute: "2-digit",
+    }).format(articleDate),
+    views: row.views > 0 ? formatCompact(row.views) : "0",
     image: row.image_style,
     row,
   };
@@ -292,25 +297,25 @@ export default function Home() {
                 <h2>Recent Articles</h2>
               </div>
               <button
-                className="text-button"
-                onClick={() => window.location.assign("/all-article")}
+                className="primary-button"
+                onClick={() => window.location.assign("/admin/all-article")}
                 type="button"
               >
                 View all articles
               </button>
             </div>
             <div className="article-table" role="table" aria-label="Recent articles">
-              <div className="article-row article-row-actions table-header" role="row">
+              <div className="article-row dashboard-row table-header" role="row">
                 <span role="columnheader">Article</span>
                 <span role="columnheader">Author</span>
                 <span role="columnheader">Editor</span>
                 <span role="columnheader">Status</span>
                 <span role="columnheader">Date</span>
+                <span role="columnheader">Time</span>
                 <span role="columnheader">Views</span>
-                <span role="columnheader">Actions</span>
               </div>
               {visibleArticles.map((article) => (
-                <div className="article-row article-row-actions" key={article.id} role="row">
+                <div className="article-row dashboard-row" key={article.id} role="row">
                   <div className="article-title" role="cell">
                     <span className="thumbnail" style={{ background: article.image }} aria-hidden="true" />
                     <span>{article.title}</span>
@@ -321,16 +326,8 @@ export default function Home() {
                     <span className={`status ${article.status.toLowerCase()}`}>{article.status}</span>
                   </span>
                   <span role="cell" data-label="Date">{article.date}</span>
+                  <span role="cell" data-label="Time">{article.time}</span>
                   <strong role="cell" data-label="Views">{article.views}</strong>
-                  <div className="row-actions" role="cell">
-                    <button className="action-btn edit-btn" onClick={() => {
-                      setEditingArticle(article.row);
-                      setIsModalOpen(true);
-                    }} type="button" title="Edit article">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-                      Edit
-                    </button>
-                  </div>
                 </div>
               ))}
             </div>
