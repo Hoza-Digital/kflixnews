@@ -15,6 +15,7 @@ type Article = {
   date: string;
   views: string;
   image: string;
+  row: ArticleRow;
 };
 
 type ArticleRow = Database["public"]["Tables"]["articles"]["Row"];
