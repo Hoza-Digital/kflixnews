@@ -79,7 +79,9 @@ export default function Sidebar() {
     if (href === "/") {
       return pathname === "/";
     }
-    // Dashboard page is special, otherwise we check if pathname starts with href
+    if (href === "/admin") {
+      return pathname === "/admin";
+    }
     return pathname?.startsWith(href) ?? false;
   };
 
@@ -121,9 +123,11 @@ export default function Sidebar() {
           </div>
         )}
         <ThemeToggle />
-        <button className="logout" type="button">
-          <span aria-hidden="true">↪</span> Log out
-        </button>
+        <div style={{ borderTop: "1px solid var(--soft-line)", paddingTop: "12px", marginTop: "8px" }}>
+          <button className="nav-item" type="button" style={{ width: '100%', justifyContent: 'flex-start' }}>
+            <span className="nav-icon" aria-hidden="true" style={{ opacity: 0.7 }}>↪</span> Log out
+          </button>
+        </div>
       </div>
     </aside>
   );
@@ -143,7 +147,7 @@ function ThemeToggle() {
   return (
     <button 
       className="nav-item" 
-      style={{ width: '100%', justifyContent: 'flex-start', background: 'transparent', border: 'none', cursor: 'pointer', marginBottom: '4px' }} 
+      style={{ width: '100%', justifyContent: 'flex-start', marginBottom: '4px' }} 
       onClick={() => setTheme(isDark ? "light" : "dark")}
     >
       <span className="nav-icon" aria-hidden="true" style={{ opacity: 0.7 }}>

@@ -498,7 +498,7 @@ textarea:focus-visible,
 }
 
 .article-table {
-  overflow-x: auto;
+  overflow-x: hidden;
 }
 
 .text-button {
@@ -613,7 +613,7 @@ textarea:focus-visible,
 }
 
 .article-row.article-row-actions {
-  grid-template-columns: minmax(260px, 2.5fr) 140px 140px 100px 85px 70px 90px 150px;
+  grid-template-columns: 2fr 1fr 1fr 0.8fr 0.7fr 0.6fr 0.7fr 1.2fr;
 }
 
 .article-row.article-row-actions.table-header span:nth-child(7) {
@@ -634,7 +634,7 @@ textarea:focus-visible,
   align-items: center;
   background: transparent;
   border: 1px solid var(--line);
-  border-radius: 0;
+  border-radius: 10px;
   color: #475467;
   cursor: pointer;
   display: inline-flex;
@@ -1549,7 +1549,7 @@ textarea:focus-visible,
   appearance: none;
   background: white;
   border: 1px solid #d9dce1;
-  border-radius: 0;
+  border-radius: 10px;
   color: var(--ink);
   font-family: inherit;
   font-size: 14px;
