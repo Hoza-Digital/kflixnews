@@ -13,7 +13,7 @@ type Article = {
   title: string;
   author: string;
   editor: string;
-  status: "Published" | "Draft";
+  status: "Published" | "Draft" | "Archived";
   date: string;
   time: string;
   views: string;
@@ -43,7 +43,7 @@ function formatArticle(row: ArticleRow): Article {
     title: row.title,
     author: row.author,
     editor: row.editor,
-    status: row.status === "Published" ? "Published" : "Draft",
+    status: row.status === "Published" ? "Published" : (row.status === "Archived" ? "Archived" : "Draft"),
     date: new Intl.DateTimeFormat("en", {
       month: "short",
       day: "numeric",
@@ -68,9 +68,25 @@ export default function AllArticlesPage() {
   const [databaseError, setDatabaseError] = useState("");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [canArchive, setCanArchive] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
+
+    async function loadPermissions() {
+      const storedRoleId = localStorage.getItem("active_role_id");
+      if (storedRoleId) {
+        const { data: roleData } = await supabase.from("roles").select("job_tasks").eq("id", storedRoleId).single();
+        if (roleData && roleData.job_tasks) {
+          setCanArchive(roleData.job_tasks.includes("Archive Article"));
+        } else {
+          setCanArchive(false);
+        }
+      } else {
+        // Admin fallback
+        setCanArchive(true);
+      }
+    }
 
     async function loadArticles() {
       const { data, error } = await supabase
@@ -89,6 +105,7 @@ export default function AllArticlesPage() {
       setIsSyncing(false);
     }
 
+    void loadPermissions();
     void loadArticles();
     return () => {
       cancelled = true;
@@ -123,31 +140,39 @@ export default function AllArticlesPage() {
               {databaseError ? "Local preview" : isSyncing ? "Syncing database" : "Shared database live"}
             </div>
           </div>
-          <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-            <input 
-              aria-label="Search articles"
-              className="gallery-page-search"
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by title or author..."
-              value={search}
-              style={{ width: "240px", minHeight: "42px" }}
-            />
-            <div className="range-select">
-              <select 
-                aria-label="Filter by status" 
-                value={statusFilter} 
+          <div style={{ display: "flex", gap: "12px", alignItems: "flex-end" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <label htmlFor="searchArticles" style={{ fontSize: "13px", fontWeight: 500, color: "var(--ink)" }}>Search Articles</label>
+              <input 
+                id="searchArticles"
+                aria-label="Search articles"
+                className="gallery-page-search"
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search by title or author..."
+                value={search}
+                style={{ width: "240px", height: "42px", minHeight: "42px", maxHeight: "42px", boxSizing: "border-box" }}
+              />
+            </div>
+            
+            <div className="filter-group" style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <label htmlFor="statusFilter" style={{ fontSize: "13px", fontWeight: 500, color: "var(--ink)" }}>Filter by status</label>
+              <select
+                id="statusFilter"
+                value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                style={{ height: "42px" }}
+                className="gallery-page-search"
+                style={{ height: "42px", minHeight: "42px", maxHeight: "42px", boxSizing: "border-box" }}
               >
                 <option value="All">All Statuses</option>
                 <option value="Published">Published</option>
-                <option value="Draft">Drafts</option>
+                <option value="Draft">Draft</option>
+                <option value="Archived">Archived</option>
               </select>
             </div>
             <button className="primary-button" onClick={() => {
               setEditingArticle(null);
               setIsModalOpen(true);
-            }} type="button" style={{ height: "42px" }}>
+            }} type="button" style={{ height: "42px", minHeight: "42px", maxHeight: "42px", boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
               <span aria-hidden="true">✎</span> New Article
             </button>
           </div>
@@ -191,18 +216,21 @@ export default function AllArticlesPage() {
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
                       Edit
                     </button>
-                    <button className="action-btn archive-btn" onClick={async () => {
-                      if (!window.confirm("Are you sure you want to archive this article? It will be removed from the database.")) return;
-                      const { error } = await supabase.from("articles").delete().eq("id", article.id);
-                      if (error) {
-                        alert("Failed to archive: " + error.message);
-                      } else {
-                        setArticles(current => current.filter(a => a.id !== article.id));
-                      }
-                    }} type="button" title="Archive article">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="21 8 21 21 3 21 3 8" /><rect x="1" y="3" width="22" height="5" /><line x1="10" y1="12" x2="14" y2="12" /></svg>
-                      Archive
-                    </button>
+                    {canArchive && (
+                      <button className="action-btn archive-btn" onClick={async () => {
+                        if (!window.confirm("Are you sure you want to archive this article? It will be hidden from the main site.")) return;
+                        const { error } = await supabase.from("articles").update({ status: "Archived" }).eq("id", article.id);
+                        if (error) {
+                          alert("Failed to archive: " + error.message);
+                        } else {
+                          // Update local state to reflect the archived status instead of removing it
+                          setArticles(current => current.map(a => a.id === article.id ? { ...a, status: "Archived" } : a));
+                        }
+                      }} type="button" title="Archive article">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="21 8 21 21 3 21 3 8" /><rect x="1" y="3" width="22" height="5" /><line x1="10" y1="12" x2="14" y2="12" /></svg>
+                        Archive
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}

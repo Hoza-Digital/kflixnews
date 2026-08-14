@@ -634,7 +634,7 @@ textarea:focus-visible,
   align-items: center;
   background: transparent;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 0;
   color: #475467;
   cursor: pointer;
   display: inline-flex;
@@ -642,7 +642,7 @@ textarea:focus-visible,
   font-weight: 650;
   gap: 5px;
   min-height: 34px;
-  padding: 0 12px;
+  padding: 0 16px;
   transition: background 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
   white-space: nowrap;
 }
@@ -1549,7 +1549,7 @@ textarea:focus-visible,
   appearance: none;
   background: white;
   border: 1px solid #d9dce1;
-  border-radius: 8px;
+  border-radius: 0;
   color: var(--ink);
   font-family: inherit;
   font-size: 14px;
@@ -1675,7 +1675,7 @@ textarea:focus-visible,
 .manager-image-preview {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  border-radius: 0;
   display: flex;
   justify-content: center;
   margin-bottom: 24px;
@@ -1693,7 +1693,7 @@ textarea:focus-visible,
 
 .manager-metadata {
   background: #f8fafc;
-  border-radius: 8px;
+  border-radius: 0;
   display: grid;
   gap: 8px;
   grid-template-columns: 1fr 1fr;
@@ -1717,7 +1717,7 @@ textarea:focus-visible,
 }
 
 .video-default-thumbnail {
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: 10px;
   display: block;
   height: auto;
@@ -2100,3 +2100,53 @@ textarea:focus-visible,
 .dark .slug-preview code {
   color: var(--blue-dark);
 }
+.permission-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: var(--soft-line);
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.permission-header.center {
+  justify-content: center;
+}
+.permission-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  min-height: 56px;
+  border-bottom: 1px solid var(--line);
+  padding: 0 16px;
+  
+  border-radius: 0;
+  transition: all 0.2s ease;
+}
+.permission-item:hover {
+  background: var(--soft-line);
+}
+.permission-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+  accent-color: var(--blue);
+  transform: scale(1.1);
+}
+.permission-item span {
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.4;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+

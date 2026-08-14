@@ -19,9 +19,13 @@ const AVAILABLE_PAGES = [
 ];
 
 const AVAILABLE_TASKS = [
+  "Is Author",
+  "Is Editor",
+  "Edit Author Name",
+  "Edit Editor Name",
   "Create Article",
   "Edit Article",
-  "Delete Article",
+  "Archive Article",
   "Publish Article",
   "Upload Photo",
   "Delete Photo",
@@ -43,6 +47,10 @@ export default function SettingsPage() {
   const [error, setError] = useState("");
   const [modifiedRoles, setModifiedRoles] = useState<Record<string, boolean>>({});
   const [isSaving, setIsSaving] = useState(false);
+  
+  // Developer Tools
+  const [users, setUsers] = useState<Database["public"]["Tables"]["users"]["Row"][]>([]);
+  const [activeMockUser, setActiveMockUser] = useState<string>("");
 
   // Global Settings State
   const [siteTimezone, setSiteTimezone] = useState("UTC");
@@ -51,12 +59,24 @@ export default function SettingsPage() {
 
   useEffect(() => {
     fetchRoles();
+    fetchUsers();
     fetchSettings();
     const storedRole = localStorage.getItem("active_role_id");
     if (storedRole) {
       setActiveMockRole(storedRole);
     }
+    const storedUser = localStorage.getItem("active_user_id");
+    if (storedUser) {
+      setActiveMockUser(storedUser);
+    }
   }, []);
+
+  async function fetchUsers() {
+    const { data, error } = await supabase.from("users").select("*").order("full_name");
+    if (!error && data) {
+      setUsers(data);
+    }
+  }
 
   async function fetchSettings() {
     const { data, error } = await supabase.from("site_settings").select("*").eq("id", 1).single();
@@ -271,22 +291,62 @@ export default function SettingsPage() {
             </div>
           </div>
           
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <label htmlFor="mockRole" style={{ fontSize: "14px", color: "var(--ink)", fontWeight: 500 }}>
-              View Dashboard As:
+          <div style={{ display: "grid", gap: "24px", gridTemplateColumns: "1fr 1fr", minWidth: "500px" }}>
+            <label className="field">
+              <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ink)", marginBottom: "8px", display: "block" }}>Mock Logged-In Role</span>
+              <div className="select-wrapper">
+                <select 
+                  value={activeMockRole}
+                  onChange={(e) => {
+                    setActiveMockRole(e.target.value);
+                    if (e.target.value) {
+                      localStorage.setItem("active_role_id", e.target.value);
+                    } else {
+                      localStorage.removeItem("active_role_id");
+                    }
+                    window.dispatchEvent(new Event("storage"));
+                  }}
+                  style={{ width: "100%", height: "44px", borderRadius: "8px", border: "1px solid var(--cloud)", padding: "0 16px", fontSize: "15px", color: "var(--ink)", backgroundColor: "var(--paper)" }}
+                >
+                  <option value="">Admin (Bypass Permissions)</option>
+                  {savedRoles.map((role) => (
+                    <option key={role.id} value={role.id}>{role.name}</option>
+                  ))}
+                </select>
+                <div className="select-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+              </div>
+              <p style={{ fontSize: "13px", color: "var(--slate)", marginTop: "8px" }}>Select a role to preview the dashboard exactly as a user in that role would see it.</p>
             </label>
-            <select 
-              id="mockRole" 
-              className="gallery-page-search"
-              value={activeMockRole} 
-              onChange={handleMockRoleChange}
-              style={{ width: "200px" }}
-            >
-              <option value="">-- No Role (See All) --</option>
-              {roles.map((r) => (
-                <option key={r.id} value={r.id}>{r.name}</option>
-              ))}
-            </select>
+            
+            <label className="field">
+              <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--ink)", marginBottom: "8px", display: "block" }}>Mock Logged-In User</span>
+              <div className="select-wrapper">
+                <select 
+                  value={activeMockUser}
+                  onChange={(e) => {
+                    setActiveMockUser(e.target.value);
+                    if (e.target.value) {
+                      localStorage.setItem("active_user_id", e.target.value);
+                    } else {
+                      localStorage.removeItem("active_user_id");
+                    }
+                    window.dispatchEvent(new Event("storage"));
+                  }}
+                  style={{ width: "100%", height: "44px", borderRadius: "8px", border: "1px solid var(--cloud)", padding: "0 16px", fontSize: "15px", color: "var(--ink)", backgroundColor: "var(--paper)" }}
+                >
+                  <option value="">None (Use default)</option>
+                  {users.map((user) => (
+                    <option key={user.id} value={user.id}>{user.full_name}</option>
+                  ))}
+                </select>
+                <div className="select-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+              </div>
+              <p style={{ fontSize: "13px", color: "var(--slate)", marginTop: "8px" }}>Select a user to mock their identity (for author/editor auto-fill features).</p>
+            </label>
           </div>
         </header>
 
@@ -308,7 +368,7 @@ export default function SettingsPage() {
             </div>
           )}
 
-          <section className="panel" style={{ padding: "24px", marginBottom: "40px", maxWidth: "1100px" }}>
+          <section className="panel" style={{ padding: "24px", marginBottom: "40px", width: "100%" }}>
             <h2 style={{ marginBottom: "16px", fontSize: "18px", fontWeight: 600 }}>Create New Role</h2>
             <form onSubmit={handleCreateRole} style={{ display: "flex", gap: "12px", alignItems: "center" }}>
               <input
@@ -325,7 +385,7 @@ export default function SettingsPage() {
             </form>
           </section>
 
-          <section style={{ maxWidth: "1100px" }}>
+          <section style={{ width: "100%" }}>
             <h2 style={{ marginBottom: "24px", fontSize: "20px", fontWeight: 600 }}>Role Permissions</h2>
             
             {isLoading && roles.length === 0 ? (
@@ -429,27 +489,27 @@ export default function SettingsPage() {
                         )}
                       </div>
                       
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "24px" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "1.2fr 2.4fr 0.8fr 0.8fr 0.8fr" }}>
                         {/* Page Visibility Permissions */}
-                        <div>
-                          <h4 style={{ fontSize: "14px", fontWeight: 600, color: "var(--ink)", marginBottom: "20px", textTransform: "uppercase", letterSpacing: "0.5px", minHeight: "44px" }}>
+                        <div style={{ borderRight: "1px solid var(--line)" }}>
+                          <h4 className="permission-header">
                             Visible Pages (Sidebar)
                           </h4>
-                          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                          <div style={{ display: "flex", flexDirection: "column" }}>
                             {AVAILABLE_PAGES.map((page) => {
                               const activeRole = savedRoles.find(r => r.id === activeMockRole);
                               const canGrant = !activeRole || activeRole.can_see_pages?.includes(page);
                               if (!canGrant) return null;
                               
                               return (
-                                <label key={page} style={{ display: "flex", alignItems: "flex-start", gap: "12px", cursor: "pointer", minHeight: "44px" }}>
+                                <label key={page} className="permission-item">
                                   <input 
                                     type="checkbox"
                                     checked={role.can_see_pages?.includes(page) || false}
                                     onChange={() => togglePagePermission(role.id, page)}
-                                    style={{ width: "18px", height: "18px", cursor: "pointer", flexShrink: 0, marginTop: "2px" }}
+                                   
                                   />
-                                  <span style={{ fontSize: "15px", color: "var(--ink)", lineHeight: "1.4" }}>{page}</span>
+                                  <span>{page}</span>
                                 </label>
                               );
                             })}
@@ -463,25 +523,25 @@ export default function SettingsPage() {
                         </div>
 
                         {/* Job Tasks Permissions */}
-                        <div>
-                          <h4 style={{ fontSize: "14px", fontWeight: 600, color: "var(--ink)", marginBottom: "20px", textTransform: "uppercase", letterSpacing: "0.5px", minHeight: "44px" }}>
+                        <div style={{ borderRight: "1px solid var(--line)" }}>
+                          <h4 className="permission-header center">
                             Job Tasks
                           </h4>
-                          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: "0" }}>
                             {AVAILABLE_TASKS.map((task) => {
                               const activeRole = savedRoles.find(r => r.id === activeMockRole);
                               const canGrant = !activeRole || activeRole.job_tasks?.includes(task);
                               if (!canGrant) return null;
                               
                               return (
-                                <label key={task} style={{ display: "flex", alignItems: "flex-start", gap: "12px", cursor: "pointer", minHeight: "44px" }}>
+                                <label key={task} className="permission-item">
                                   <input 
                                     type="checkbox"
                                     checked={role.job_tasks?.includes(task) || false}
                                     onChange={() => toggleJobTaskPermission(role.id, task)}
-                                    style={{ width: "18px", height: "18px", cursor: "pointer", flexShrink: 0, marginTop: "2px" }}
+                                   
                                   />
-                                  <span style={{ fontSize: "15px", color: "var(--ink)", lineHeight: "1.4" }}>{task}</span>
+                                  <span>{task}</span>
                                 </label>
                               );
                             })}
@@ -495,25 +555,25 @@ export default function SettingsPage() {
                         </div>
 
                         {/* Role Creation Permissions */}
-                        <div>
-                          <h4 style={{ fontSize: "14px", fontWeight: 600, color: "var(--ink)", marginBottom: "20px", textTransform: "uppercase", letterSpacing: "0.5px", minHeight: "44px" }}>
+                        <div style={{ borderRight: "1px solid var(--line)" }}>
+                          <h4 className="permission-header">
                             Can Register Roles
                           </h4>
-                          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                          <div style={{ display: "flex", flexDirection: "column" }}>
                             {roles.map((targetRole) => {
                               const activeRole = savedRoles.find(r => r.id === activeMockRole);
                               const canGrant = !activeRole || activeRole.can_create_roles?.includes(targetRole.id);
                               if (!canGrant) return null;
                               
                               return (
-                                <label key={targetRole.id} style={{ display: "flex", alignItems: "flex-start", gap: "12px", cursor: "pointer", minHeight: "44px" }}>
+                                <label key={targetRole.id} className="permission-item">
                                   <input 
                                     type="checkbox"
                                     checked={role.can_create_roles?.includes(targetRole.id) || false}
                                     onChange={() => toggleRoleCreationPermission(role.id, targetRole.id)}
-                                    style={{ width: "18px", height: "18px", cursor: "pointer", flexShrink: 0, marginTop: "2px" }}
+                                   
                                   />
-                                  <span style={{ fontSize: "15px", color: "var(--ink)", lineHeight: "1.4" }}>{targetRole.name}</span>
+                                  <span>{targetRole.name}</span>
                                 </label>
                               );
                             })}
@@ -527,25 +587,25 @@ export default function SettingsPage() {
                         </div>
 
                         {/* Role Deletion Permissions */}
-                        <div>
-                          <h4 style={{ fontSize: "14px", fontWeight: 600, color: "var(--ink)", marginBottom: "20px", textTransform: "uppercase", letterSpacing: "0.5px", minHeight: "44px" }}>
+                        <div style={{ borderRight: "1px solid var(--line)" }}>
+                          <h4 className="permission-header">
                             Can Delete Roles
                           </h4>
-                          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                          <div style={{ display: "flex", flexDirection: "column" }}>
                             {roles.map((targetRole) => {
                               const activeRole = savedRoles.find(r => r.id === activeMockRole);
                               const canGrant = !activeRole || activeRole.can_delete_roles?.includes(targetRole.id);
                               if (!canGrant) return null;
                               
                               return (
-                                <label key={targetRole.id} style={{ display: "flex", alignItems: "flex-start", gap: "12px", cursor: "pointer", minHeight: "44px" }}>
+                                <label key={targetRole.id} className="permission-item">
                                   <input 
                                     type="checkbox"
                                     checked={role.can_delete_roles?.includes(targetRole.id) || false}
                                     onChange={() => toggleRoleDeletionPermission(role.id, targetRole.id)}
-                                    style={{ width: "18px", height: "18px", cursor: "pointer", flexShrink: 0, marginTop: "2px" }}
+                                   
                                   />
-                                  <span style={{ fontSize: "15px", color: "var(--ink)", lineHeight: "1.4" }}>{targetRole.name}</span>
+                                  <span>{targetRole.name}</span>
                                 </label>
                               );
                             })}
@@ -559,25 +619,25 @@ export default function SettingsPage() {
                         </div>
 
                         {/* Role Edit Permissions */}
-                        <div>
-                          <h4 style={{ fontSize: "14px", fontWeight: 600, color: "var(--ink)", marginBottom: "20px", textTransform: "uppercase", letterSpacing: "0.5px", minHeight: "44px" }}>
+                        <div style={{  }}>
+                          <h4 className="permission-header">
                             Can Edit Roles
                           </h4>
-                          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                          <div style={{ display: "flex", flexDirection: "column" }}>
                             {roles.map((targetRole) => {
                               const activeRole = savedRoles.find(r => r.id === activeMockRole);
                               const canGrant = !activeRole || activeRole.can_edit_roles?.includes(targetRole.id);
                               if (!canGrant) return null;
                               
                               return (
-                                <label key={targetRole.id} style={{ display: "flex", alignItems: "flex-start", gap: "12px", cursor: "pointer", minHeight: "44px" }}>
+                                <label key={targetRole.id} className="permission-item">
                                   <input 
                                     type="checkbox"
                                     checked={role.can_edit_roles?.includes(targetRole.id) || false}
                                     onChange={() => toggleRoleEditPermission(role.id, targetRole.id)}
-                                    style={{ width: "18px", height: "18px", cursor: "pointer", flexShrink: 0, marginTop: "2px" }}
+                                   
                                   />
-                                  <span style={{ fontSize: "15px", color: "var(--ink)", lineHeight: "1.4" }}>{targetRole.name}</span>
+                                  <span>{targetRole.name}</span>
                                 </label>
                               );
                             })}
@@ -733,3 +793,5 @@ export default function SettingsPage() {
     </main>
   );
 }
+
+

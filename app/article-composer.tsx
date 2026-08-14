@@ -160,6 +160,55 @@ export function ArticleComposer({ article = null, onClose, onSaved, open, presen
   const [isUploading, setIsUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [formError, setFormError] = useState("");
+
+  // Role & Permissions State
+  const [users, setUsers] = useState<Database["public"]["Tables"]["users"]["Row"][]>([]);
+  const [activeUser, setActiveUser] = useState<Database["public"]["Tables"]["users"]["Row"] | null>(null);
+  const [canEditAuthor, setCanEditAuthor] = useState(false);
+  const [canEditEditor, setCanEditEditor] = useState(false);
+
+  useEffect(() => {
+    async function loadPermissionsAndUsers() {
+      // Fetch users
+      const { data: usersData } = await supabase.from("users").select("*").order("full_name");
+      if (usersData) setUsers(usersData);
+
+      // Check current mock user
+      const storedUserId = localStorage.getItem("active_user_id");
+      if (storedUserId && usersData) {
+        const user = usersData.find(u => u.id === storedUserId) || null;
+        setActiveUser(user);
+        // Set default values if creating a new article and author/editor not explicitly set
+        if (!article) {
+          if (user) {
+            setAuthor(user.full_name);
+          }
+        }
+      }
+
+      // Fetch active role to determine permissions
+      const storedRoleId = localStorage.getItem("active_role_id");
+      if (storedRoleId) {
+        const { data: roleData } = await supabase.from("roles").select("job_tasks").eq("id", storedRoleId).single();
+        if (roleData && roleData.job_tasks) {
+          setCanEditAuthor(roleData.job_tasks.includes("Edit Author Name"));
+          setCanEditEditor(roleData.job_tasks.includes("Edit Editor Name"));
+        } else {
+          setCanEditAuthor(false);
+          setCanEditEditor(false);
+        }
+      } else {
+        // Admin fallback
+        setCanEditAuthor(true);
+        setCanEditEditor(true);
+      }
+    }
+    
+    if (open) {
+      loadPermissionsAndUsers();
+    }
+  }, [open, article]);
+
   const [isDraggingCover, setIsDraggingCover] = useState(false);
   const [isDraggingInline, setIsDraggingInline] = useState(false);
 
@@ -891,11 +940,54 @@ export function ArticleComposer({ article = null, onClose, onSaved, open, presen
               <div className="workflow-people-fields">
                 <label className="field">
                   <span>Author <b>*</b></span>
-                  <input maxLength={120} onChange={(event) => setAuthor(event.target.value)} value={author} />
+                  {canEditAuthor ? (
+                    <select
+                      value={author}
+                      onChange={(e) => setAuthor(e.target.value)}
+                      className="gallery-page-search"
+                      style={{ border: "1px solid var(--cloud)", padding: "0 12px", width: "100%", height: "40px", borderRadius: "8px", fontSize: "14px", backgroundColor: "var(--paper)", color: "var(--ink)" }}
+                    >
+                      <option value="">-- Select Author --</option>
+                      {users.filter(u => u.role_id).map(user => (
+                        // Ideally we check if their role has 'Is Author', but for simplicity we show all users or map their role if we joined roles.
+                        // For now we just list all users as potential authors, to be fully strict we could fetch their role's job_tasks.
+                        <option key={user.id} value={user.full_name}>{user.full_name}</option>
+                      ))}
+                      {/* Allow custom names if they type them in edit mode, or just rely on list */}
+                      {!users.some(u => u.full_name === author) && author && <option value={author}>{author}</option>}
+                    </select>
+                  ) : (
+                    <input 
+                      maxLength={120} 
+                      value={author} 
+                      disabled
+                      style={{ opacity: 0.7, cursor: "not-allowed", backgroundColor: "var(--cloud)" }}
+                    />
+                  )}
                 </label>
                 <label className="field">
                   <span>Editor</span>
-                  <input maxLength={120} onChange={(event) => setEditor(event.target.value)} value={editor} />
+                  {canEditEditor ? (
+                    <select
+                      value={editor}
+                      onChange={(e) => setEditor(e.target.value)}
+                      className="gallery-page-search"
+                      style={{ border: "1px solid var(--cloud)", padding: "0 12px", width: "100%", height: "40px", borderRadius: "8px", fontSize: "14px", backgroundColor: "var(--paper)", color: "var(--ink)" }}
+                    >
+                      <option value="Unassigned">Unassigned</option>
+                      {users.map(user => (
+                        <option key={user.id} value={user.full_name}>{user.full_name}</option>
+                      ))}
+                      {!users.some(u => u.full_name === editor) && editor !== "Unassigned" && editor && <option value={editor}>{editor}</option>}
+                    </select>
+                  ) : (
+                    <input 
+                      maxLength={120} 
+                      value={editor} 
+                      disabled
+                      style={{ opacity: 0.7, cursor: "not-allowed", backgroundColor: "var(--cloud)" }}
+                    />
+                  )}
                 </label>
               </div>
               <div className="workflow-choice-fields">
