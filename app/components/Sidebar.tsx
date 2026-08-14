@@ -8,11 +8,11 @@ import { supabase } from "../../lib/supabase";
 const ALL_NAVIGATION = [
   ["Dashboard", "▦", "/"],
   ["New Article", "＋", "/new-article"],
-  ["Articles", "▤", "/admin/all-article"],
+  ["Articles", "▤", "/all-article"],
   ["Photo Gallery", "▧", "/photo-gallery"],
   ["Video Gallery", "▶", "/video-gallery"],
-  ["Comments", "○", "/"],
-  ["User Management", "👤", "/user-management"],
+  ["Comments", "○", "/comments"],
+  ["User Management", "🛠", "/user-management"],
   ["Settings", "⚙", "/settings"],
 ];
 

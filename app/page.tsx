@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ArticleComposer } from "./article-composer";
-import Sidebar from "./components/Sidebar";
-import { supabase } from "../lib/supabase";
-import type { Database } from "../lib/database.types";
+import { ArticleComposer } from "../article-composer";
+import Sidebar from "../components/Sidebar";
+import { supabase } from "../../lib/supabase";
+import type { Database } from "../../lib/database.types";
 
 type Article = {
   id: number;
