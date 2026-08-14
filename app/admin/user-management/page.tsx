@@ -26,9 +26,17 @@ export default function UserManagementPage() {
     async function fetchRoles() {
       const { data, error } = await supabase.from("roles").select("*").order("name");
       if (!error && data) {
-        setRoles(data);
-        if (data.length > 0) {
-          setRoleId(data[0].id);
+        const activeRoleId = typeof window !== 'undefined' ? localStorage.getItem("active_role_id") : null;
+        const activeRole = data.find(r => r.id === activeRoleId);
+        
+        let allowedRoles = data;
+        if (activeRole) {
+          allowedRoles = data.filter(r => activeRole.can_create_roles?.includes(r.id));
+        }
+
+        setRoles(allowedRoles);
+        if (allowedRoles.length > 0) {
+          setRoleId(allowedRoles[0].id);
         }
       }
     }
