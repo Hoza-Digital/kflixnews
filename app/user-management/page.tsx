@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import Sidebar from "../../components/Sidebar";
-import { supabase } from "../../../lib/supabase";
-import type { Database } from "../../../lib/database.types";
+import Sidebar from "../components/Sidebar";
+import { supabase } from "../../lib/supabase";
+import type { Database } from "../../lib/database.types";
 
 type Role = Database["public"]["Tables"]["roles"]["Row"];
 

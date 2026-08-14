@@ -1,7 +1,7 @@
 "use client";
 
-import { ArticleComposer } from "../../article-composer";
-import Sidebar from "../../components/Sidebar";
+import { ArticleComposer } from "../article-composer";
+import Sidebar from "../components/Sidebar";
 
 // navItems moved to Sidebar
 
