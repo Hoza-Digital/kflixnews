@@ -162,7 +162,7 @@ export function ArticleComposer({ article = null, onClose, onSaved, open, presen
   const [formError, setFormError] = useState("");
 
   // Role & Permissions State
-  const [users, setUsers] = useState<Database["public"]["Tables"]["users"]["Row"][]>([]);
+  const [users, setUsers] = useState<(Database["public"]["Tables"]["users"]["Row"] & { roles: { job_tasks: string[] | null } | null })[]>([]);
   const [activeUser, setActiveUser] = useState<Database["public"]["Tables"]["users"]["Row"] | null>(null);
   const [canEditAuthor, setCanEditAuthor] = useState(false);
   const [canEditEditor, setCanEditEditor] = useState(false);
@@ -170,7 +170,7 @@ export function ArticleComposer({ article = null, onClose, onSaved, open, presen
   useEffect(() => {
     async function loadPermissionsAndUsers() {
       // Fetch users
-      const { data: usersData } = await supabase.from("users").select("*").order("full_name");
+      const { data: usersData } = await supabase.from("users").select("*, roles(job_tasks)").order("full_name");
       if (usersData) setUsers(usersData);
 
       // Check current mock user
@@ -948,9 +948,7 @@ export function ArticleComposer({ article = null, onClose, onSaved, open, presen
                       style={{ border: "1px solid var(--cloud)", padding: "0 12px", width: "100%", height: "40px", borderRadius: "8px", fontSize: "14px", backgroundColor: "var(--paper)", color: "var(--ink)" }}
                     >
                       <option value="">-- Select Author --</option>
-                      {users.filter(u => u.role_id).map(user => (
-                        // Ideally we check if their role has 'Is Author', but for simplicity we show all users or map their role if we joined roles.
-                        // For now we just list all users as potential authors, to be fully strict we could fetch their role's job_tasks.
+                      {users.filter(u => u.roles?.job_tasks?.includes("Is Author")).map(user => (
                         <option key={user.id} value={user.full_name}>{user.full_name}</option>
                       ))}
                       {/* Allow custom names if they type them in edit mode, or just rely on list */}
@@ -975,7 +973,7 @@ export function ArticleComposer({ article = null, onClose, onSaved, open, presen
                       style={{ border: "1px solid var(--cloud)", padding: "0 12px", width: "100%", height: "40px", borderRadius: "8px", fontSize: "14px", backgroundColor: "var(--paper)", color: "var(--ink)" }}
                     >
                       <option value="Unassigned">Unassigned</option>
-                      {users.map(user => (
+                      {users.filter(u => u.roles?.job_tasks?.includes("Is Editor")).map(user => (
                         <option key={user.id} value={user.full_name}>{user.full_name}</option>
                       ))}
                       {!users.some(u => u.full_name === editor) && editor !== "Unassigned" && editor && <option value={editor}>{editor}</option>}
@@ -1117,3 +1115,4 @@ export function ArticleComposer({ article = null, onClose, onSaved, open, presen
     </div>
   );
 }
+

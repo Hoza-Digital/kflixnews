@@ -613,7 +613,7 @@ textarea:focus-visible,
 }
 
 .article-row.article-row-actions {
-  grid-template-columns: minmax(260px, 2.5fr) 140px 140px 100px 120px 100px 90px 150px;
+  grid-template-columns: minmax(260px, 2.5fr) 140px 140px 100px 85px 70px 90px 150px;
 }
 
 .article-row.article-row-actions.table-header span:nth-child(7) {
