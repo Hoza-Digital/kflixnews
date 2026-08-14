@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArticleComposer } from "../../article-composer";
 import Sidebar from "../../components/Sidebar";
+import { DateRangePicker } from "../../components/DateRangePicker";
 import { supabase } from "../../../lib/supabase";
 import type { Database } from "../../../lib/database.types";
 import { articlePostPath } from "../../../lib/articles";
@@ -68,6 +69,8 @@ export default function AllArticlesPage() {
   const [databaseError, setDatabaseError] = useState("");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [canArchive, setCanArchive] = useState(false);
 
   useEffect(() => {
@@ -115,6 +118,15 @@ export default function AllArticlesPage() {
   const sortedArticles = useMemo(() => {
     return [...articles].filter(article => {
       if (statusFilter !== "All" && article.status !== statusFilter) return false;
+      
+      if (startDate && endDate) {
+        const articleD = new Date(article.date);
+        const articleTime = articleD.getTime();
+        const startTime = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()).getTime();
+        const endTime = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 23, 59, 59, 999).getTime();
+        if (articleTime < startTime || articleTime > endTime) return false;
+      }
+      
       if (search.trim()) {
         const s = search.toLowerCase();
         return article.title.toLowerCase().includes(s) || article.author.toLowerCase().includes(s);
@@ -123,7 +135,7 @@ export default function AllArticlesPage() {
     }).sort((a, b) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
-  }, [articles, search, statusFilter]);
+  }, [articles, search, statusFilter, startDate, endDate]);
 
   return (
     <main className="app-shell">
@@ -168,6 +180,20 @@ export default function AllArticlesPage() {
                 <option value="Draft">Draft</option>
                 <option value="Archived">Archived</option>
               </select>
+            </div>
+            
+            <div className="filter-group" style={{ display: "flex", flexDirection: "column", gap: "6px", width: "240px" }}>
+              <label style={{ fontSize: "13px", fontWeight: 500, color: "var(--ink)" }}>Filter by date</label>
+              <div style={{ height: "42px", boxSizing: "border-box" }}>
+                <DateRangePicker 
+                  startDate={startDate} 
+                  endDate={endDate} 
+                  onChange={(start, end) => {
+                    setStartDate(start);
+                    setEndDate(end);
+                  }} 
+                />
+              </div>
             </div>
             <button className="primary-button" onClick={() => {
               setEditingArticle(null);

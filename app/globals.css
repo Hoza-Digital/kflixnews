@@ -652,9 +652,14 @@ textarea:focus-visible,
 }
 
 .action-btn:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
-  box-shadow: 0 2px 6px rgba(17, 24, 39, 0.06);
+  background: #f1f5fb;
+  color: var(--ink);
+}
+
+.archive-btn:hover {
+  background: #ef4444 !important;
+  border-color: #dc2626 !important;
+  color: #ffffff !important;
 }
 
 .edit-btn:hover {
@@ -1944,8 +1949,15 @@ textarea:focus-visible,
 }
 
 .dark .action-btn:hover {
-  background: #334155;
-  border-color: #475569;
+  background: #ffffff;
+  color: #0f172a !important;
+  border-color: #ffffff;
+}
+
+.dark .archive-btn:hover {
+  background: #ef4444 !important;
+  border-color: #dc2626 !important;
+  color: #ffffff !important;
 }
 
 .dark .secondary-button, .dark .text-button {
@@ -2165,3 +2177,62 @@ textarea:focus-visible,
 .dark .article-row > strong {
   color: white;
 }
+
+/* Date Picker */
+.date-picker-wrapper { position: relative; }
+.date-picker-trigger {
+  align-items: center; cursor: pointer; display: flex; justify-content: space-between;
+  position: relative; user-select: none;
+}
+.date-picker-clear {
+  background: transparent; border: 0; color: #94a3b8; cursor: pointer; font-size: 16px;
+  height: 24px; padding: 0; width: 24px; display: flex; align-items: center; justify-content: center;
+}
+.date-picker-clear:hover { color: var(--red, #ef4444); }
+
+.date-picker-popover {
+  background: white; border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08); margin-top: 8px; padding: 16px;
+  position: absolute; right: 0; top: 100%; width: 300px; z-index: 100;
+}
+.dark .date-picker-popover {
+  background: #1e293b; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.calendar-header {
+  align-items: center; display: flex; justify-content: space-between; margin-bottom: 12px;
+}
+.calendar-header button {
+  background: transparent; border: 0; color: var(--ink); cursor: pointer;
+  font-size: 24px; line-height: 1; padding: 0 8px;
+}
+.calendar-header button:hover { color: var(--blue); }
+.calendar-header strong { color: var(--ink); font-size: 14px; font-weight: 600; }
+
+.calendar-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px 0;
+}
+.calendar-day-name {
+  color: #64748b; font-size: 12px; font-weight: 600; text-align: center; padding-bottom: 8px;
+}
+.calendar-day {
+  cursor: pointer; padding: 4px 0; text-align: center; user-select: none;
+}
+.calendar-day.empty { cursor: default; }
+
+.calendar-day-inner {
+  align-items: center; border-radius: 50%; color: var(--ink); display: inline-flex;
+  font-size: 13px; height: 32px; justify-content: center; width: 32px; margin: 0 auto;
+}
+
+.calendar-day:not(.empty):hover .calendar-day-inner { background: #f1f5f9; }
+.dark .calendar-day:not(.empty):hover .calendar-day-inner { background: #334155; }
+
+.calendar-day.selected .calendar-day-inner {
+  background: var(--blue) !important; color: white !important;
+}
+
+.calendar-day.in-range { background: #e0f2fe; }
+.dark .calendar-day.in-range { background: rgba(56, 189, 248, 0.2); }
+
+.calendar-day.disabled { cursor: not-allowed; opacity: 0.3; }
