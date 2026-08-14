@@ -6,14 +6,14 @@ import { usePathname } from "next/navigation";
 import { supabase } from "../../lib/supabase";
 
 const ALL_NAVIGATION = [
-  ["Dashboard", "▦", "/"],
-  ["New Article", "＋", "/new-article"],
-  ["Articles", "▤", "/all-article"],
-  ["Photo Gallery", "▧", "/photo-gallery"],
-  ["Video Gallery", "▶", "/video-gallery"],
-  ["Comments", "○", "/comments"],
-  ["User Management", "🛠", "/user-management"],
-  ["Settings", "⚙", "/settings"],
+  ["Dashboard", "▦", "/admin"],
+  ["New Article", "＋", "/admin/new-article"],
+  ["Articles", "▤", "/admin/all-article"],
+  ["Photo Gallery", "▧", "/admin/photo-gallery"],
+  ["Video Gallery", "▶", "/admin/video-gallery"],
+  ["Comments", "○", "/admin/comments"],
+  ["User Management", "🛠", "/admin/user-management"],
+  ["Settings", "⚙", "/admin/settings"],
 ];
 
 export default function Sidebar() {
