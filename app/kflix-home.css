@@ -412,6 +412,7 @@
 }
 .poster {
   align-items: end;
+  aspect-ratio: 9 / 16;
   background-image:
     linear-gradient(0deg, rgba(0, 0, 0, 0.85), transparent 68%),
     url("/kflix/story-stills.png");
@@ -420,7 +421,7 @@
   border-radius: 7px;
   display: flex;
   flex-direction: column;
-  height: 330px;
+  height: auto;
   justify-content: end;
   padding: 25px 14px;
   text-align: center;
@@ -622,7 +623,7 @@
     gap: 9px;
   }
   .poster {
-    height: 257px;
+    height: auto;
     padding: 17px 8px;
   }
   .poster h3 {
@@ -741,7 +742,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
   .poster {
-    height: 245px;
+    height: auto;
   }
   .newsletter {
     padding: 72px 20px;
