@@ -634,10 +634,11 @@
   }
 
   .feature-stack {
+    align-items: flex-start;
     gap: 16px;
     position: absolute;
-    right: 34px;
-    top: 36px;
+    right: 66px;
+    top: 46px;
   }
 
   .feature-card {
@@ -647,10 +648,14 @@
   }
 
   .feature-card:nth-child(2) {
+    height: 320px;
     margin-top: 132px;
+    width: 222px;
   }
 
   .feature-card:nth-child(3) {
+    height: 333px;
+    margin-left: 20px;
     margin-top: 112px;
   }
 }
