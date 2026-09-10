@@ -288,6 +288,7 @@
 .mini-still {
   background-image: url("/kflix/story-stills.png");
   background-size: 200% 200%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 4px;
   grid-row: 1/3;
   height: 34px;
