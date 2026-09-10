@@ -343,11 +343,12 @@
   padding: 10px 0;
 }
 .story-image {
+  aspect-ratio: 16 / 9;
   background-image: url("/kflix/story-stills.png");
   background-size: 200% 200%;
   border: 1px solid var(--image-frame);
   border-radius: 7px;
-  height: 126px;
+  height: auto;
 }
 .story-row h3 {
   font-size: clamp(20px, 2.7vw, 34px);
@@ -594,7 +595,7 @@
     padding: 5px 0;
   }
   .story-image {
-    height: 129px;
+    height: auto;
   }
   .story-row h3 {
     font-family: "Arial Narrow", Arial, sans-serif;
@@ -722,7 +723,7 @@
     grid-template-columns: 116px 1fr 15px;
   }
   .story-image {
-    height: 88px;
+    height: auto;
   }
   .story-row h3 {
     font-size: 18px;
