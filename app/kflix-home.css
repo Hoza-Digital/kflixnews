@@ -297,6 +297,9 @@
 .now-playing {
   padding: 68px 28px 18px;
 }
+.latest {
+  padding-top: 30px;
+}
 .section-title {
   align-items: center;
   display: flex;
