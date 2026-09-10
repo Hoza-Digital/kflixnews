@@ -713,15 +713,21 @@
   }
 
   .trending a {
+    align-items: center;
     border-left: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
     gap: 12px;
-    grid-template-columns: 50px 1fr;
     height: 50px;
     min-width: 145px;
     padding-left: 16px;
   }
 
+  .trending a > span:last-child {
+    justify-content: center;
+  }
+
   .mini-still {
+    flex: 0 0 50px;
     height: 50px;
     width: 50px;
   }
