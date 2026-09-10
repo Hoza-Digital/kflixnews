@@ -1,7 +1,7 @@
 .kflix-page {
   --cyan: #3cf1e5;
   --coral: #fa754d;
-  --image-frame: #566064;
+  --image-frame: #424a4d;
   background: #02070b;
   color: #f6f7f7;
   font-family: Arial, Helvetica, sans-serif;
@@ -226,6 +226,13 @@
   overflow: hidden;
   padding: 17px;
   width: 180px;
+}
+.feature-card,
+.mini-still,
+.story-image,
+.manifesto,
+.poster {
+  box-shadow: none;
 }
 .feature-card:nth-child(2) {
   margin-top: 75px;
