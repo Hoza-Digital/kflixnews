@@ -1,0 +1,1 @@
+ALTER TABLE "public"."roles" ADD COLUMN "can_edit_roles" text[] DEFAULT '{}'::text[];
