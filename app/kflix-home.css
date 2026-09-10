@@ -216,7 +216,7 @@
   background-image:
     linear-gradient(180deg, transparent 45%, #020407 100%),
     url("/kflix/story-stills.png");
-  background-size: 200% 200%;
+  background-size: 202% 202%;
   border: 1px solid var(--image-frame);
   border-radius: 9px;
   display: flex;
@@ -296,7 +296,7 @@
 }
 .mini-still {
   background-image: url("/kflix/story-stills.png");
-  background-size: 200% 200%;
+  background-size: 202% 202%;
   border: 1px solid var(--image-frame);
   border-radius: 4px;
   grid-row: 1/3;
@@ -346,7 +346,7 @@
 .story-image {
   aspect-ratio: 16 / 9;
   background-image: url("/kflix/story-stills.png");
-  background-size: 200% 200%;
+  background-size: 202% 202%;
   border: 1px solid var(--image-frame);
   border-radius: 7px;
   height: auto;
@@ -411,7 +411,7 @@
   background-image:
     linear-gradient(0deg, rgba(0, 0, 0, 0.85), transparent 68%),
     url("/kflix/story-stills.png");
-  background-size: 200% 200%;
+  background-size: 202% 202%;
   border: 1px solid var(--image-frame);
   border-radius: 7px;
   display: flex;
