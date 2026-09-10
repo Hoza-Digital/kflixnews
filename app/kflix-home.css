@@ -711,22 +711,26 @@
   }
 
   .trending a {
-    gap: 11px;
+    gap: 12px;
     grid-template-columns: 50px 1fr;
-    min-width: 130px;
+    min-width: 145px;
   }
 
   .mini-still {
     height: 50px;
-    width: 45px;
+    width: 50px;
   }
 
-  .trending-title {
+  .trending em {
     font-size: 10px;
   }
 
+  .trending-title {
+    font-size: 14px;
+  }
+
   .trending a small {
-    font-size: 8px;
+    font-size: 11px;
   }
 
   .trending-next {
