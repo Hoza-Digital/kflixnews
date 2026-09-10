@@ -232,6 +232,7 @@
 .story-image,
 .manifesto,
 .poster {
+  border: 0;
   box-shadow: none;
 }
 .feature-card:nth-child(2) {
