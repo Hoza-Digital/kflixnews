@@ -697,15 +697,16 @@
 /* The rail stays compact at all non-phone widths. */
 @media (min-width: 761px) {
   .trending {
-    gap: 14px;
+    gap: 18px;
+    max-width: 816px;
     overflow: hidden;
-    padding: 18px 28px;
+    padding: 18px 30px;
   }
 
   .trending a {
     gap: 9px;
     grid-template-columns: 40px 1fr;
-    min-width: 108px;
+    min-width: 107px;
   }
 
   .mini-still {
