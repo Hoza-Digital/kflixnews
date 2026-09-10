@@ -694,23 +694,43 @@
   }
 }
 
-/* The rail stays compact at all non-phone widths. */
+/* Full-width, left-aligned editorial rail. */
 @media (min-width: 761px) {
   .trending {
-    gap: 18px;
-    max-width: 816px;
+    gap: 22px;
     overflow: hidden;
-    padding: 18px 30px;
+    padding: 24px 42px;
+  }
+
+  .trending-divider {
+    height: 50px;
+  }
+
+  .trending strong {
+    font-size: 13px;
   }
 
   .trending a {
-    gap: 9px;
-    grid-template-columns: 40px 1fr;
-    min-width: 107px;
+    gap: 11px;
+    grid-template-columns: 50px 1fr;
+    min-width: 130px;
   }
 
   .mini-still {
-    height: 40px;
-    width: 36px;
+    height: 50px;
+    width: 45px;
+  }
+
+  .trending-title {
+    font-size: 10px;
+  }
+
+  .trending a small {
+    font-size: 8px;
+  }
+
+  .trending-next {
+    height: 30px;
+    width: 30px;
   }
 }
