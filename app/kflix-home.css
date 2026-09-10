@@ -820,3 +820,35 @@
     width: 30px;
   }
 }
+
+@media (min-width: 1200px) {
+  .trending {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .trending::-webkit-scrollbar {
+    display: none;
+  }
+
+  .trending a {
+    flex: 0 0 auto;
+    min-width: 185px;
+  }
+
+  .trending-next {
+    flex: 0 0 30px;
+  }
+
+  .trending em {
+    font-size: 14px;
+  }
+
+  .trending-title {
+    font-size: 20px;
+  }
+
+  .trending a small {
+    font-size: 15px;
+  }
+}
