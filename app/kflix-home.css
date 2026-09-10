@@ -174,7 +174,11 @@
   margin: 17px 0 28px;
   text-transform: uppercase;
 }
-.hero h1 span {
+.hero-motion {
+  display: inline-block;
+  white-space: nowrap;
+}
+.hero h1 .hero-dot {
   color: var(--coral);
 }
 .hero-copy > p {
