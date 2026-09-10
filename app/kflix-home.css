@@ -25,9 +25,7 @@
 }
 
 .trending-divider {
-  background: rgba(255, 255, 255, 0.2);
-  height: 39px;
-  width: 1px;
+  display: none;
 }
 
 .trending a {
@@ -718,6 +716,7 @@
     border-left: 1px solid rgba(255, 255, 255, 0.2);
     gap: 12px;
     grid-template-columns: 50px 1fr;
+    height: 50px;
     min-width: 145px;
     padding-left: 16px;
   }
