@@ -340,11 +340,11 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.13);
   display: grid;
   gap: 25px;
-  grid-template-columns: 260px 1fr 22px;
+  grid-template-columns: 299px 1fr 22px;
   padding: 10px 0;
 }
 .story-image {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 21 / 9;
   background-image: url("/kflix/story-stills.png");
   background-size: 202% 202%;
   border: 1px solid var(--image-frame);
@@ -592,7 +592,7 @@
   }
   .story-row {
     gap: 20px;
-    grid-template-columns: 274px 1fr 14px;
+    grid-template-columns: 315px 1fr 14px;
     padding: 5px 0;
   }
   .story-image {
