@@ -763,9 +763,9 @@
 /* Full-width, left-aligned editorial rail. */
 @media (min-width: 761px) {
   .trending {
-    gap: 22px;
+    gap: 18px;
     overflow: hidden;
-    padding: 24px 42px;
+    padding: 24px 28px;
   }
 
   .trending-divider {
@@ -782,7 +782,7 @@
     display: flex;
     gap: 12px;
     height: 50px;
-    min-width: 145px;
+    min-width: 170px;
     padding-left: 16px;
   }
 
@@ -797,15 +797,18 @@
   }
 
   .trending em {
-    font-size: 10px;
+    font-size: 12px;
+    line-height: 1;
   }
 
   .trending-title {
-    font-size: 14px;
+    font-size: 17px;
+    line-height: 1.1;
   }
 
   .trending a small {
-    font-size: 11px;
+    font-size: 13px;
+    line-height: 1;
   }
 
   .trending-next {
