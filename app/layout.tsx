@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "STORY — Publishing Dashboard",
-  description: "A clean dashboard for managing articles and audience growth.",
+  title: "KFLIXMEDIA — Culture in motion",
+  description: "Entertainment news for what comes next.",
 };
 
 import { ThemeProvider } from "./components/theme-provider";
