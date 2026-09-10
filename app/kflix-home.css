@@ -40,7 +40,11 @@
   width: 36px;
 }
 
-.trending a > span:last-child {
+.trending figure {
+  display: contents;
+}
+
+.trending figcaption {
   display: grid;
   gap: 2px;
 }
@@ -340,7 +344,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.13);
   display: grid;
   gap: 25px;
-  grid-template-columns: 353px 1fr 22px;
+  grid-template-columns: 299px 1fr 22px;
   padding: 10px 0;
 }
 .story-image {
@@ -592,7 +596,7 @@
   }
   .story-row {
     gap: 20px;
-    grid-template-columns: 372px 1fr 14px;
+    grid-template-columns: 315px 1fr 14px;
     padding: 5px 0;
   }
   .story-image {
@@ -786,7 +790,7 @@
     padding-left: 16px;
   }
 
-  .trending a > span:last-child {
+  .trending figcaption {
     justify-content: center;
   }
 
