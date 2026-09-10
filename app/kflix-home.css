@@ -711,9 +711,11 @@
   }
 
   .trending a {
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
     gap: 12px;
     grid-template-columns: 50px 1fr;
     min-width: 145px;
+    padding-left: 16px;
   }
 
   .mini-still {
