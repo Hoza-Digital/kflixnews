@@ -415,9 +415,10 @@
   aspect-ratio: 9 / 16;
   background-image:
     linear-gradient(0deg, rgba(0, 0, 0, 0.85), transparent 68%),
-    url("/kflix/story-stills.png");
-  background-size: 202% 202%;
-  border: 1px solid var(--image-frame);
+    var(--poster-image);
+  background-position: center;
+  background-size: cover;
+  border: 0;
   border-radius: 7px;
   display: flex;
   flex-direction: column;
@@ -441,16 +442,16 @@
   text-transform: uppercase;
 }
 .poster-0 {
-  background-position: left top;
+  --poster-image: url("/kflix/poster-echoes-of-dawn.png");
 }
 .poster-1 {
-  background-position: right top;
+  --poster-image: url("/kflix/poster-neon-reverie.png");
 }
 .poster-2 {
-  background-position: left bottom;
+  --poster-image: url("/kflix/poster-children-of-the-dust.png");
 }
 .poster-3 {
-  background-position: right bottom;
+  --poster-image: url("/kflix/poster-velvet-nights.png");
 }
 .newsletter {
   background:
